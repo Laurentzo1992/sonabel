@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from  django.views.decorators.cache import cache_control
-
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.urls import reverse
 
 
 
@@ -61,6 +62,16 @@ def editplanitems(request, id):
     else:
         form = PlanitemsForm(instance=item)
     return render(request, 'suivi/edit_planitems.html', {'item':item, 'form':form})
+
+
+
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def delete_planitem(request, id):
+    item = Planitems.objects.get(id = id)
+    item.delete()
+    messages.success(request, 'supprimer avec susccès !')
+    return HttpResponseRedirect(reverse("itemsliste"))
 
 
 
@@ -173,7 +184,18 @@ def editdossier(request, dossier_id):
     return render(request, 'suivi/editdossier.html', {'form': form})
 
 
-
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def delete_dossier(request, dossier_id):
+    item = Dossiers.objects.get(id = dossier_id)
+    # Check if this dossier have a lot
+    if item.has_lots():
+        messages.error(request, 'Ce dossier ne peut pas être supprimé car il contient des lots.')
+    else:
+        # Delete if any lot has not associate
+        item.delete()
+        messages.success(request, 'supprimer avec susccès !')
+    return HttpResponseRedirect(reverse("listdoc"))
 
 
 
@@ -251,6 +273,17 @@ def editlot(request, id):
 
 
 
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def delete_lot(request, lot_id):
+    # Récupère l'objet Lot à modifier
+    item = get_object_or_404(Lots, id=lot_id)
+    dossier_id = item.dossier_id.id
+    item.delete()
+    messages.success(request, 'supprimer avec susccès !')
+    return HttpResponseRedirect(reverse("dossier_lots", kwargs={'dossier_id': dossier_id}))
+
+
 
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -279,3 +312,17 @@ def suivi(request):
 def process_dossier(request):
     return render(request, 'suivi/process_dossier.html')
 
+
+
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def addavis(request):
+    return render(request, 'suivi/addavis.html')
+
+
+
+
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def addoffre(request):
+    return render(request, 'suivi/addavis.html')

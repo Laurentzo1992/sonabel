@@ -15,13 +15,12 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Numero dossier</th>
+            <th>Numero</th>
             <th>Intitulé</th>
-            <th>Date retour signature</th>
             <th>Date retour DGCMEF</th>
             <th>Propriétaire</th>
             <th>Dossier</th>
-            <th><i class="fa fa-gears text-success"></i></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +29,6 @@
             <td class="text-center">{{item.id}}</td>
             <td class="text-center">{{item.numero_doss}}</td>
             <td class="text-center">{{item.intitule_doss}}</td>
-            <td class="text-center">{{item.date_retour_sign}}</td>
             <td class="text-center">{{item.date_retour_dgcmef}}</td>
             <td class="text-center">{{item.owner}}</td>
             {% if item.fichier %}
@@ -38,7 +36,7 @@
             {% else %}
             <td class="text-center"><i class="fa fa-close text-danger text-bold"></i></td>
             {% endif %}
-            <td class="text-center">
+            <td>
                 <a href="{% url 'adddlot' item.id %}" title="Nouveau lot">
                     <i class="fa fa-book text-success"></i>
                 </a>
@@ -51,9 +49,13 @@
                 <a href="{% url 'dossier_lots' item.id %}" title="Voir les lot du dossier">
                     <i class="fa fa-eye text-secondary"></i>
                 </a>
+                <a data-bs-toggle="modal" data-bs-target="#deleteDossier{{item.id}}" title="supprimer">
+                    <i class="fas fa-trash text-danger"></i> 
+                </a>
             </td>
         </tr>
-       
+
+        {% include "suivi/delete_dossier.html" %}
         {% endfor %}
     </tbody>
 </table>

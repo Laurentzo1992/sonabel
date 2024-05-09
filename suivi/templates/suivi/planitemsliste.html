@@ -48,12 +48,12 @@
                     <i class="fa fa-pencil text-warning"></i>
                 </a>
                 &nbsp;
-                <a href="{% url 'editplanitems' item.id %}">
-                    <i class="fa fa-trash text-danger"></i>
+                <a data-bs-toggle="modal" data-bs-target="#deletePlanItem{{item.id}}" title="supprimer">
+                    <i class="fas fa-trash text-danger"></i> 
                 </a>
             </td>
         </tr>
-       
+        {% include "suivi/delete_planitem.html" %}
         {% endfor %}
     </tbody>
 </table>

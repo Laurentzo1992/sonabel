@@ -7,12 +7,9 @@
 {% block title %}
     ajout ppm
 {% endblock %}
-
-
-
+{% block extra_style %}{% endblock extra_style %}
 
 {% block main %}
-
 
 <div class="container-fluid">
       <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
@@ -35,40 +32,27 @@
          </form> 
 </div>
 
-   {% endblock main %}
 
 
 
-   
-   <script>
-     $("#id_region").select2({
-      placeholder: "selectionner la region",
-      allowClear: true
-     });
-     $("#id_province").select2({
-      placeholder: "selectionner la province",
-      allowClear: true
-     });
-   
-   
-     $("#id_commune").select2({
-       placeholder: "selectionner la Commune",
-       allowClear: true
-      });
-   
-   
-      $("#id_region_demandeur").select2({
-         placeholder: "selectionner la region du demandeur",
-         allowClear: true
-        });
-   
-   
-        $("#id_province_demandeur").select2({
-         placeholder: "selectionner la province du demandeur",
-         allowClear: true
-        });
-        
-   </script>
+<script>
+
+   $("#id_plan_id").select2({
+    placeholder: "selectionner le plan",
+    allowClear: true,
+    theme: "classic",
+   });
+
+   $("#id_agent_id").select2({
+    placeholder: "selectionner l'agent",
+    allowClear: true,
+    theme: "classic",
+   });
+
+ </script>
+{% endblock main %}
+
+
 
 
 

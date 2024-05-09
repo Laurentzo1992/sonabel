@@ -4,10 +4,13 @@
 {% load static %}
 
 {% block title %}
-{{ dossier.name }} - Lots
+    liste lot
 {% endblock %}
 
 
+{% block btn %}
+<a class="nav-link" href="{% url 'suivi' %}"><i class="fa fa-rotate-left text-danger"></i></a>
+{% endblock btn %}
 
 {% block main %}
 
@@ -16,10 +19,10 @@
 <table id="example" class="table table-striped">
     <thead>
         <tr>
-            <th>BuNomero du lotdget</th>
+            <th>Lot</th>
             <th>Intitulé</th>
-            <th>Montant du lot</th>
-            <th><i class="fa fa-gears text-success"></i></th>
+            <th>Montant</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -32,8 +35,15 @@
                 <a href="{% url 'editlot' item.id %}">
                     <i class="fa fa-pencil text-warning"></i>
                 </a>
+                &nbsp;
+                <a data-bs-toggle="modal" data-bs-target="#deleteLot{{item.id}}" title="supprimer">
+                    <i class="fas fa-trash text-danger"></i> 
+                </a>
             </td>
         </tr>
+
+
+        {% include "suivi/delete_lot.html" %}
         {% endfor %}
     </tbody>
 </table>

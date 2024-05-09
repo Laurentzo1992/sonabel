@@ -3,6 +3,19 @@ from django.contrib.auth.models import User
 
 
 
+class Fournisseurs(models.Model):
+    nom_four = models.CharField(max_length=200, blank=True, null=True)
+    rccm = models.CharField(max_length=200, blank=True, null=True)
+    ifu = models.CharField(max_length=200, blank=True, null=True)
+    telephone1 = models.CharField(max_length=200, blank=True, null=True)
+    telephone2 = models.CharField(max_length=200, blank=True, null=True)
+    adresse = models.CharField(max_length=200, blank=True, null=True)
+    email = models.CharField(max_length=200, blank=True, null=True)
+    domaine = models.CharField(max_length=200, blank=True, null=True)
+    type = models.CharField(max_length=200, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    
 class Status(models.Model):
     libelle = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
@@ -34,8 +47,7 @@ class Devises(models.Model):
         return self.libelle
     
     
-    
-    
+
 class Budgets(models.Model):
     libelle = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
@@ -102,6 +114,7 @@ class Planitems(models.Model):
         return str(self.num_ordre)
 
 
+
 class Dossiers(models.Model):
     planitem_id = models.ForeignKey(Planitems, blank=True, null=True, on_delete=models.CASCADE, verbose_name="Ligne du plan")
     numero_doss = models.CharField(max_length=200,blank=True, null=True)
@@ -111,13 +124,19 @@ class Dossiers(models.Model):
     date_trans_dgcmef = models.DateField(blank=True, null=True, verbose_name="Date de tensmission à la DGCMEF")
     owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, verbose_name="Propriétaire")
     date_retour_dgcmef = models.DateField(blank=True, null=True, verbose_name="Date retour la DGCMEF")
-    fichier = models.FileField(blank=True, null=True, upload_to="uploads")
+    fichier = models.FileField(blank=True, null=True, upload_to="uploads/dao")
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     
+    
     def __str__(self):
         return self.numero_doss
+    
+    
+    def has_lots(self):
+        # Check if this dossier have a lot
+        return self.lots_set.exists()
     
     
     
@@ -132,3 +151,14 @@ class Lots(models.Model):
     
     def __str__(self):
         return self.intitule_lot
+    
+
+    
+class Avis(models.Model):
+    num_publi = models.CharField(max_length=200, blank=True, null=True, verbose_name="Numero de publication")
+    date_envoi = models.DateField(blank=True, null=True, verbose_name="Date d'envois")
+    date_publi = models.DateTimeField(blank=True, null=True, verbose_name="Date de publication")
+    fichier = models.FileField(upload_to="uploads/avis", blank=True, null=True, verbose_name="Avis de publication")
+    dossier_id = models.ForeignKey(Dossiers, blank=True, null=True, verbose_name="Dossier", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
