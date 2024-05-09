@@ -5,10 +5,13 @@
     <thead>
         <tr>
             <th>Id</th>
+            <th>Numero de publication</th>
+            <th>Date d'envois</th>
             <th>Date de publication</th>
+            <th>Dossier</th>
             <th>Fichier</th>
             <th>
-                <a class="nav-link" href="{% url 'addavis' %}">
+                <a class="nav-link" href="{% url 'addavis' dossiers.id %}">
                 <i class="fa fa-plus-circle text-primary"></i>
                 </a>
             </th>
@@ -18,8 +21,15 @@
         {% for item in items %}
         <tr>
             <td>{{item.id}}</td>
-            <td>{{item.plan_id}}</td>
-            <td>{{item.budget}}</td>
+            <td>{{item.num_publi}}</td>
+            <td>{{item.date_envoi}}</td>
+            <td>{{item.date_publi}}</td>
+            {% if item.fichier %}
+            <td>{{item.fichier}}</td>
+            {% else %}
+            <td class="text-center text-danger">pas de fichier</td>
+            {% endif %}
+            <td>{{item.dossier_id}}</td>
             <td>
                 <a href="">
                     <i class="fa fa-pencil text-warning"></i>

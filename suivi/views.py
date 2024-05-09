@@ -309,16 +309,46 @@ def suivi(request):
 
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def process_dossier(request):
+def process_dossier(request, dossier_id):
+    # Check if user is authenticated
+    if request.user.is_authenticated:
+        # Get user authenticated
+        agent = user=request.user
+        # get All Dossier when user is owner
+        dossiers = Dossiers.objects.get(owner=agent, id=dossier_id)
+
+        # Check if user have Dossier
+        if dossiers:
+            context = {"dossiers": dossiers}
+            return render(request, 'suivi/process_dossier.html',context)
+
     return render(request, 'suivi/process_dossier.html')
 
 
 
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def addavis(request):
-    return render(request, 'suivi/addavis.html')
+def addavis(request, dossier_id):
+    # Get a planitems objet
+    dossier = get_object_or_404(Dossiers, id=dossier_id)
 
+    if request.method == "POST":
+        # Create a form
+        form = AvisForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Sauve a form
+            avis = form.save(commit=False)
+            avis.dossier_id = dossier
+            avis.save()
+            messages.success(request, "Avis ajouté avec succès !")
+            return redirect('process_dossier', dossier_id=dossier_id)
+
+    else:
+        # Initialize a form with data
+        form = AvisForm(initial={'dossier': dossier})
+
+    # Show a form
+    return render(request, 'suivi/addavis.html', {'form': form, "dossier":dossier})
 
 
 

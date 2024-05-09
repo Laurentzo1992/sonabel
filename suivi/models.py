@@ -160,5 +160,5 @@ class Avis(models.Model):
     date_publi = models.DateTimeField(blank=True, null=True, verbose_name="Date de publication")
     fichier = models.FileField(upload_to="uploads/avis", blank=True, null=True, verbose_name="Avis de publication")
     dossier_id = models.ForeignKey(Dossiers, blank=True, null=True, verbose_name="Dossier", on_delete=models.CASCADE)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)

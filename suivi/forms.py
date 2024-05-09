@@ -44,6 +44,15 @@ class LotForm(forms.ModelForm):
         }
         
         
+class AvisForm(forms.ModelForm):
+    class Meta:
+        model = Avis
+        fields = '__all__'
+        widgets = {
+            'date_envoi': forms.DateInput(attrs={'type': 'date'}),
+            'date_publi': forms.DateInput(attrs={'type': 'date'}),
+        }
+        
         
 
 

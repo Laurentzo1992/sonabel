@@ -41,7 +41,7 @@
                     <i class="fa fa-book text-success"></i>
                 </a>
                 &nbsp;
-                <a href="{% url 'editdossier' item.id %}" title="Modifier lot">
+                <a href="{% url 'editdossier' item.id %}" title="Modifier Dossier">
                     <i class="fa fa-pencil text-warning"></i>
                 </a>
 
@@ -49,7 +49,7 @@
                 <a href="{% url 'dossier_lots' item.id %}" title="Voir les lot du dossier">
                     <i class="fa fa-eye text-secondary"></i>
                 </a>
-                <a data-bs-toggle="modal" data-bs-target="#deleteDossier{{item.id}}" title="supprimer">
+                <a data-bs-toggle="modal" data-bs-target="#deleteDossier{{item.id}}" title="supprimer le dossier">
                     <i class="fas fa-trash text-danger"></i> 
                 </a>
             </td>
