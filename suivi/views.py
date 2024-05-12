@@ -310,17 +310,22 @@ def suivi(request):
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def process_dossier(request, dossier_id):
-    # Check if user is authenticated
-    if request.user.is_authenticated:
-        # Get user authenticated
-        agent = user=request.user
-        # get All Dossier when user is owner
-        dossiers = Dossiers.objects.get(owner=agent, id=dossier_id)
+        
+    # Récupère l'objet Dossier correspondant à l'identifiant
+    dossier = get_object_or_404(Dossiers, id=dossier_id)
 
-        # Check if user have Dossier
-        if dossiers:
-            context = {"dossiers": dossiers}
-            return render(request, 'suivi/process_dossier.html',context)
+    # Récupère tous les lots associés à ce dossier
+    avis = Avis.objects.filter(dossier_id=dossier)
+
+    # Check if user have Dossier
+    if dossier and avis:
+        
+        context = {
+        'dossier': dossier,
+        'avis': avis
+        }
+        
+        return render(request, 'suivi/process_dossier.html',context)
 
     return render(request, 'suivi/process_dossier.html')
 
@@ -349,6 +354,35 @@ def addavis(request, dossier_id):
 
     # Show a form
     return render(request, 'suivi/addavis.html', {'form': form, "dossier":dossier})
+
+
+
+
+
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def editavis(request, avis_id):
+    # Récupère l'objet Lot à modifier
+    item = get_object_or_404(Avis, id=avis_id)
+
+    if request.method == "POST":
+        # Create new form data
+        form = AvisForm(request.POST, request.FILES, instance=item)
+
+        if form.is_valid():
+            # Save form
+            updated_avis = form.save()
+            # Get dossier id
+            dossier_id = updated_avis.dossier_id.id
+            # Reddirect this url
+            messages.success(request, f"{updated_avis.num_lot} de {updated_avis.dossier_id.num_publi} modifié avec succès !")
+            return redirect('process_dossier', dossier_id=dossier_id)
+
+    else:
+        # Initialize a form with data
+        form = LotForm(instance=item)
+
+    return render(request, 'suivi/editavis.html', {'form': form, 'item': item})
 
 
 

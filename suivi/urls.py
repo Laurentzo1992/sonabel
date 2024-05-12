@@ -19,7 +19,8 @@ urlpatterns = [
     path('LignePlan/Dossier/<int:dossier_id>/lots/', views.list_dossier_lots, name='dossier_lots'),
     path('LignePlan/Dossier/Suivi/', views.suivi, name='suivi'),
     path('LignePlan/Dossier/Traitement/<int:dossier_id>/', views.process_dossier, name='process_dossier'),
-    path('LignePlan/Dossier/Traitement/<int:dossier_id>/Avis/', views.addavis, name='addavis'),
+    path('LignePlan/Dossier/Traitement/Avis/<int:dossier_id>/', views.addavis, name='addavis'),
+    path('LignePlan/Dossier/Traitement/Avis/Edit/<int:avis_id>/', views.editavis, name='editavis'),
     path('LignePlan/Dossier/Traitement/Offre/', views.addoffre, name='addoffre'),
 ]
 
