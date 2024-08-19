@@ -1,47 +1,62 @@
+<!-- offre.html -->
+<div class="container">
+    <div class="row mb-3">
+        <div class="col text-start">
+            <label for="entries">Afficher :</label>
+            <select id="entries">
+                <option value="10">10</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+        <div class="col text-end">
+            <form class="d-flex justify-content-end">
+                <input type="search" placeholder="Rechercher...">
+            </form>
+        </div>
+    </div>
 
-
-<table id="example" class="table table-striped">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date de reception</th>
-            <th>
-                &nbsp;
-                <a class="nav-link" href="{% url 'addoffre' %}">
-                    <i class="fa fa-plus-circle text-primary"></i>
-                </a>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in items %}
-        <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.plan_id}}</td>
-            <td>
-                <a href="">
-                    <i class="fa fa-pencil text-warning"></i>
-                </a>
-                &nbsp;
-                <a data-bs-toggle="modal" data-bs-target="#deletePlanItem{{item.id}}" title="supprimer">
-                    <i class="fas fa-trash text-danger"></i> 
-                </a>
-            </td>
-        </tr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Intitulé Dossier</th>
+                <th>Date de réception</th>
+                <th>Entreprise</th>
+                <th>Offre Technique</th>
+                <th>Lots</th>
+                <th>
+                    <span class="d-inline">Actions</span>
+                    <a href="{% url 'addoffre' dossier.id %}" class="nav-link d-inline">
+                        <i class="fa fa-plus-circle text-primary fa"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offre in offres %}
+            <tr>
+                <td>{{ offre.dossier }}</td>
+                <td>{{ offre.date_prevu_reception }}</td>
+                <td>{{ offre.entreprise }}</td>
+                {% if offre.offre_technique %}
+                <td><a href="{{ offre.offre_technique.url }}"> <i class="fa fa-file-pdf" style="color: red;"></i> </a></td>
+                {% else %}
+                <td class="text-center text-danger">pas de fichier</td>
+                {% endif %}
+                <td>
+                    {% if offre.lot %}
+                        {{ offre.lot.num_lot }}
+                    {% else %}
+                        Aucun lot sélectionné
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'modifier_offres' dossier.id offre.id %}" class="btn btn-primary btn-sm">Modifier</a>
+                    <a href="{% url 'supprimer_offres' dossier.id offre.id %}" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
         
-        {% endfor %}
-    </tbody>
-</table>
-
-
-
-
-
-   
-   
-   
-
-
-
-
-
+    </table>
+</div>

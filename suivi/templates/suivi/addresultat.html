@@ -1,0 +1,84 @@
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+Resultat{% endblock %}
+
+
+
+
+{% block main %}
+
+
+<div class="container-fluid">
+      <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
+   
+            {% csrf_token %}
+         
+            {{ form|crispy }}
+
+            <div class="mt-4" style="width: 100p%;">
+               
+               <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit" />
+               <a href="{% url 'editresultat' %}" style="color: white;">Ajouter <i class="fas fa-plus"></i></a>
+            </button>
+
+            
+            </div>
+            <select class="js-example-basic-single" name="state">
+               <option value="AL">Alabama</option>
+                 ...
+               <option value="WY">Wyoming</option>
+             </select>
+         </form> 
+</div>
+
+
+   {% endblock main %}
+
+
+
+   
+   <script>
+     $("#id_region").select2({
+      placeholder: "selectionner la region",
+      allowClear: true
+     });
+     $("#id_province").select2({
+      placeholder: "selectionner la province",
+      allowClear: true
+     });
+   
+   
+     $("#id_commune").select2({
+       placeholder: "selectionner la Commune",
+       allowClear: true
+      });
+   
+   
+      $("#id_region_demandeur").select2({
+         placeholder: "selectionner la region du demandeur",
+         allowClear: true
+        });
+   
+   
+        $("#id_province_demandeur").select2({
+         placeholder: "selectionner la province du demandeur",
+         allowClear: true
+        });
+        // In your Javascript (external .js resource or <script> tag)
+      $(document).ready(function() {
+      $('.js-example-basic-single').select2();
+});
+   </script>
+
+
+
+
+
